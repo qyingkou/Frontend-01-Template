@@ -1,4 +1,10 @@
-import { numberLiteral, log } from "./util/numberLiteral.js";
+import {
+  numberLiteral,
+  isBinaryNumber,
+  isOctalNumber,
+  isDecimalNumber,
+  isHexNubmer,
+} from "./util/numberLiteral.js";
 
 /* test case */
 /*
@@ -30,6 +36,10 @@ void (function main() {
 })();
 */
 
-export default {
+export {
   numberLiteral,
+  isBinaryNumber,
+  isOctalNumber,
+  isDecimalNumber,
+  isHexNubmer,
 };

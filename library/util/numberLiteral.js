@@ -11,22 +11,22 @@ export function numberLiteral(literal, radix) {
   };
   return map[radix](literal);
 }
-function isBinaryNumber(literal) {
+export function isBinaryNumber(literal) {
   const reg = /^[\\-]*0[bB][0-1]+$/;
   const value = literal.trim();
   return reg.test(value);
 }
-function isOctalNumber(literal) {
+export function isOctalNumber(literal) {
   const reg = /^[\\-]*0[oO][0-7]+$/;
   const value = literal.trim();
   return reg.test(value);
 }
-function isHexNubmer(literal) {
+export function isHexNubmer(literal) {
   const reg = /^[\\-]*0[xX][0-9a-fA-F]+$/;
   const value = literal.trim();
   return reg.test(value);
 }
-function isDecimalNumber(literal) {
+export function isDecimalNumber(literal) {
   const value = literal.trim();
   // 规则
   const DecimalInteger = "(?:0|(?:[1-9][\\d]*))"; // 十进制整数

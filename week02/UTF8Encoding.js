@@ -18,7 +18,9 @@ function getUTF8ByteSize(char) {
   const char_binary = char.codePointAt().toString(2);
   let byteSize = 1;
   while (byteSize < 8) {
+    // 一个字节
     if (char_binary.length <= 7) break;
+    // 多个字节
     if (
       char_binary.length <=
       byteSize * 8 - (byteSize + 1) - 2 * (byteSize - 1)
@@ -103,9 +105,6 @@ function strSplitFromEnd(str, limit) {
   return array;
 }
 
-// 前置条件
-// 字符转数组
-// 遍历数组，每个字符转二进制字符串
 void (function main() {
   /* Test case */
   console.log(UTF8Encoding(String.fromCodePoint(0b1111111)));
