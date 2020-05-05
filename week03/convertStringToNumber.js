@@ -1,10 +1,10 @@
 import {
+  stringLiteral,
   isBinaryNumber,
   isOctalNumber,
   isDecimalNumber,
   isHexNubmer,
 } from "../library/util.js";
-
 /*
  * 入口
  * @param str {String}
@@ -12,6 +12,7 @@ import {
  * @return {Number}
  */
 function convertStringToNumber(str, radix) {
+  // if (!stringLiteral(str)) return NaN;
   const map = {
     2: stringToBinary,
     8: stringToOctal,
@@ -124,42 +125,46 @@ function anyRadixToNumber(str, radix) {
 /* 
     Test Case 
 */
+// // 不符合字符串
+// console.log(`"1"1"`, convertStringToNumber(`"1"1"`, 10));
+// console.log(`'2'2'`, convertStringToNumber(`'2'2'`, 10));
+
 // console.log("===10===");
 console.log("11", convertStringToNumber("11", 10));
-console.log("-11", convertStringToNumber("-11", 10));
-console.log("12.3", convertStringToNumber("12.3", 10));
-console.log("-11.1", convertStringToNumber("-11.1", 10));
-console.log(".0", convertStringToNumber(".0", 10));
-console.log("0.", convertStringToNumber("0.", 10));
-console.warn("0.a", convertStringToNumber("0.a", 10));
-console.warn("a.0", convertStringToNumber("a.0", 10));
-console.log("1.23e-1", convertStringToNumber("1.23e-1", 10));
-console.log("-1.23e1", convertStringToNumber("-1.23e1", 10));
+// console.log("-11", convertStringToNumber("-11", 10));
+// console.log("12.3", convertStringToNumber("12.3", 10));
+// console.log("-11.1", convertStringToNumber("-11.1", 10));
+// console.log(".0", convertStringToNumber(".0", 10));
+// console.log("0.", convertStringToNumber("0.", 10));
+// console.warn("0.a", convertStringToNumber("0.a", 10));
+// console.warn("a.0", convertStringToNumber("a.0", 10));
+// console.log("1.23e-1", convertStringToNumber("1.23e-1", 10));
+// console.log("-1.23e1", convertStringToNumber("-1.23e1", 10));
 
-// console.log("===2===");
-console.log("0b11", convertStringToNumber("0b11", 2));
-console.log("-0b11", convertStringToNumber("-0b11", 2));
-console.warn("011", convertStringToNumber("011", 2));
-console.warn("-011", convertStringToNumber("-011", 2));
-console.warn("111", convertStringToNumber("111", 2));
-console.warn("1a1", convertStringToNumber("1a1", 2));
-console.warn("1.1", convertStringToNumber("1.1", 2));
+// // console.log("===2===");
+// console.log("0b11", convertStringToNumber("0b11", 2));
+// console.log("-0b11", convertStringToNumber("-0b11", 2));
+// console.warn("011", convertStringToNumber("011", 2));
+// console.warn("-011", convertStringToNumber("-011", 2));
+// console.warn("111", convertStringToNumber("111", 2));
+// console.warn("1a1", convertStringToNumber("1a1", 2));
+// console.warn("1.1", convertStringToNumber("1.1", 2));
 
-// console.log("===8===");
-console.log("-0o11", convertStringToNumber("-0o11", 8));
-console.log("0o11", convertStringToNumber("0o11", 8));
-console.warn("0o1a1", convertStringToNumber("0o1a1", 8));
-console.warn("011", convertStringToNumber("011", 8));
-console.warn("11", convertStringToNumber("11", 8));
-console.warn("-11", convertStringToNumber("-11", 8));
-console.warn("11.1", convertStringToNumber("11.1", 8));
+// // console.log("===8===");
+// console.log("-0o11", convertStringToNumber("-0o11", 8));
+// console.log("0o11", convertStringToNumber("0o11", 8));
+// console.warn("0o1a1", convertStringToNumber("0o1a1", 8));
+// console.warn("011", convertStringToNumber("011", 8));
+// console.warn("11", convertStringToNumber("11", 8));
+// console.warn("-11", convertStringToNumber("-11", 8));
+// console.warn("11.1", convertStringToNumber("11.1", 8));
 
-// console.log("===16===");
-console.log("0x11", convertStringToNumber("0x11", 16));
-console.log("-0x11", convertStringToNumber("-0x11", 16));
-console.log("-0x11f", convertStringToNumber("-0x11f", 16));
-console.log("0x11f", convertStringToNumber("0x11f", 16));
-console.warn("-0x11g", convertStringToNumber("-0x11g", 16));
-console.warn("0x11g", convertStringToNumber("0x11g", 16));
-console.warn("011", convertStringToNumber("011", 16));
-console.warn("0x11.1", convertStringToNumber("0x11.1", 16));
+// // console.log("===16===");
+// console.log("0x11", convertStringToNumber("0x11", 16));
+// console.log("-0x11", convertStringToNumber("-0x11", 16));
+// console.log("-0x11f", convertStringToNumber("-0x11f", 16));
+// console.log("0x11f", convertStringToNumber("0x11f", 16));
+// console.warn("-0x11g", convertStringToNumber("-0x11g", 16));
+// console.warn("0x11g", convertStringToNumber("0x11g", 16));
+// console.warn("011", convertStringToNumber("011", 16));
+// console.warn("0x11.1", convertStringToNumber("0x11.1", 16));

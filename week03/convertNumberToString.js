@@ -5,74 +5,49 @@
  * @return {Number}
  */
 function convertNumberToString(number, radix) {
+  // 返回NaN、undefined、null
   if (number * 1 !== number) return "NaN";
+
   const sign = Math.sign(number);
   let positive = true;
   if (number === 0) {
+    // 区分-0和0
     positive = 1 / number === -Infinity ? false : true;
   } else {
+    // 区分Infinity和-Infinity，或者普通数值
     positive = sign === -1 ? false : true;
   }
+  // 返回Infinity和-Infinity
   if (Math.abs(number) === Infinity) return (positive ? "" : "-") + "Infinity";
+  // 转为正数
   number = positive ? number : -1 * number;
 
-  const map = {
-    2: binaryToString,
-    8: octalToString,
-    10: decimalToString,
-    16: hexToString,
+  return (positive ? "" : "-") + anyRadixNumberToString(number, radix);
+}
+
+/* 任何进制数转字符串 */
+function anyRadixNumberToString(number, radix) {
+  let digits = [];
+  const prefixs = {
+    2: "0b",
+    8: "0o",
+    10: "",
+    16: "0x",
   };
-  return (positive ? "" : "-") + map[radix](number);
-}
-
-/* 十进制数转字符串 */
-function decimalToString(number) {
-  let digits = [];
-
-  while (number >= 10) {
-    digits.unshift(number % 10);
-    number = Math.floor(number / 10);
+  while (number >= radix) {
+    digits.unshift(number % radix);
+    number = Math.floor(number / radix);
   }
   digits.unshift(number);
 
-  return decimalDigitsToString(digits, 10);
+  return prefixs[radix] + anyRadixDigitsToString(digits, radix);
 }
 
-/* 二进制数转字符串 */
-function binaryToString(number) {
-  let digits = [];
-
-  while (number >= 2) {
-    digits.unshift(number % 2);
-    number = Math.floor(number / 2);
-  }
-  digits.unshift(number);
-
-  return "0b" + decimalDigitsToString(digits, 2);
-}
-
-/* 八进制数转字符串 */
-function octalToString(number) {
-  let digits = [];
-
-  while (number >= 8) {
-    digits.unshift(number % 8);
-    number = Math.floor(number / 8);
-  }
-  digits.unshift(number);
-
-  return "0o" + decimalDigitsToString(digits, 8);
-}
-
-/* 十六进制数转字符串 */
-function hexToString(number) {
-  // todo
-}
-
-/* ================================= */
-function decimalDigitsToString(digits) {
+/* 任何进制数位的数组转字符串 */
+function anyRadixDigitsToString(digits) {
   return digits
     .map((item, index) => {
+      if (item >= 10) return String.fromCharCode(item + "a".codePointAt());
       return String.fromCharCode(item + "0".codePointAt());
     })
     .join("");
@@ -116,6 +91,5 @@ log(convertNumberToString(0o11, 8), "0o11");
 log(convertNumberToString(-0o11, 8), "-0o11");
 
 // console.log("===16===");
-
 log(convertNumberToString(0x11, 16), "0x11");
 log(convertNumberToString(-0x11, 16), "-0x11");
