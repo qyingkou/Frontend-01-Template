@@ -5,27 +5,18 @@
  * @return {Number}
  */
 function convertNumberToString(number, radix) {
-  // 返回NaN、undefined、null
-  if (number * 1 !== number) return "NaN";
-
-  const sign = Math.sign(number);
-  let positive = true;
-  if (number === 0) {
-    // 区分-0和0
-    positive = 1 / number === -Infinity ? false : true;
-  } else {
-    // 区分Infinity和-Infinity，或者普通数值
-    positive = sign === -1 ? false : true;
-  }
-  // 返回Infinity和-Infinity
-  if (Math.abs(number) === Infinity) return (positive ? "" : "-") + "Infinity";
-  // 转为正数
-  number = positive ? number : -1 * number;
+  // 排除NaN，分情况解析符号
+  if (Number.isNaN(number)) return "NaN";
+  const sign = Math.sign(number); // 1,-1,0,-0,(NaN)
+  const positive = sign == 0 ? 1 / sign === Infinity : sign === 1;
+  if (!Number.isFinite(number)) return (positive ? "" : "-") + "Infinity";
+  // 数值转为正数
+  number = positive ? number : number * -1;
 
   return (positive ? "" : "-") + anyRadixNumberToString(number, radix);
 }
 
-/* 任何进制数转字符串 */
+/* 任何进制数值转字符串 */
 function anyRadixNumberToString(number, radix) {
   let digits = [];
   const prefixs = {
@@ -34,17 +25,19 @@ function anyRadixNumberToString(number, radix) {
     10: "",
     16: "0x",
   };
+  // 每个数组成员填充一个进制位
   while (number >= radix) {
     digits.unshift(number % radix);
     number = Math.floor(number / radix);
   }
   digits.unshift(number);
-
+  // 转换输出
   return prefixs[radix] + anyRadixDigitsToString(digits, radix);
 }
 
-/* 任何进制数位的数组转字符串 */
+/* 任何进制位的数组转字符串 */
 function anyRadixDigitsToString(digits) {
+  // 取unicode码表的序号，得到字符
   return digits
     .map((item, index) => {
       if (item >= 10) return String.fromCharCode(item + "a".codePointAt());
