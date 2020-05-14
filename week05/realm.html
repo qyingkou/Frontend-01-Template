@@ -5,6 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Realm_show_in_AntV</title>
+    <link rel="stylesheet" href="../library//normalize.css">
+    <style>
+        html,
+        body,
+        .main {
+            height: 100%;
+        }
+
+        #container {
+            height: 100%;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,14 +25,33 @@
         <div id="container"></div>
     </div>
     <script type="module" src="../library/antv.g6_3.4.8.min.js"></script>
-    <script type="module" src="./tmp.js"></script>
-    <!--  
+    <script type="module" src="./realm.js"></script>
     <script type="module">
-        import { set } from "./realm.js";
-        console.log('_____:', set);
-        console.log(G6);
+        import { list } from "./realm.js";
 
-        /* ================= */
+        function convert(list) {
+            const res = []
+            const map = list.reduce((res, v) => (res[v.id] = v, res), {})
+            for (const item of list) {
+                if (item.parentId === null) {
+                    res.push(item)
+                    continue
+                }
+                if (item.parentId in map) {
+                    const parent = map[item.parentId]
+                    parent.children = parent.children || []
+                    parent.children.push(item)
+                }
+            }
+            return res
+        }
+        const data = {
+            id: "Realm",
+            name: "Realm",
+            children: convert(list)
+        };
+
+        /* ============g6插件=========== */
 
         const width = document.getElementById('container').scrollWidth;
         const height = document.getElementById('container').scrollHeight || 500;
@@ -59,19 +91,32 @@
                 },
             },
             layout: {
-                type: 'dendrogram',
-                direction: 'LR', // H / V / LR / RL / TB / BT
-                nodeSep: 30,
-                rankSep: 100,
+                type: 'mindmap',
+                direction: 'H',
+                getId: function getId(d) {
+                    return d.id;
+                },
+                getHeight: function getHeight() {
+                    return 10;
+                },
+                getWidth: function getWidth() {
+                    return 10;
+                },
+                getVGap: function getVGap() {
+                    return 10;
+                },
+                getHGap: function getHGap() {
+                    return 90;
+                },
             },
         });
 
         graph.node(function (node) {
             return {
-                label: node.id,
+                label: node.name,
                 labelCfg: {
+                    offset: 10,
                     position: node.children && node.children.length > 0 ? 'left' : 'right',
-                    offset: 5,
                 },
             };
         });
@@ -79,8 +124,8 @@
         graph.data(data);
         graph.render();
         graph.fitView();
+
     </script>
-    -->
 </body>
 
 </html>

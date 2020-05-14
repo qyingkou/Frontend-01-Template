@@ -3,18 +3,18 @@
  */
 const Realm = {
   GlobalObject: GlobalObject(),
-  Intrinsics: null,
-  GlobalEnv: null,
-  TemplateMap: null,
-  HostDefined: null,
+  Intrinsics: "", // ?
+  GlobalEnv: "", // ?
+  TemplateMap: "", // ?
+  HostDefined: "", // ?
 };
 function GlobalObject() {
   return {
     value_proterties: [
-      // "globalThis",
-      // "Infinity",
-      // "NaN",
-      // "undefined",
+      //   "globalThis",
+      //   "Infinity",
+      //   "NaN",
+      //   "undefined",
     ],
     function_proterties: [
       "eval",
@@ -70,7 +70,7 @@ function GlobalObject() {
   };
 }
 
-const o = new Set(
+const orignSet = new Set(
   Object.keys(Realm.GlobalObject)
     .map((key) => {
       return Realm.GlobalObject[key];
@@ -80,31 +80,54 @@ const o = new Set(
 
 const self = window;
 let queue = [];
-o.forEach((item) => {
+for (let p of [...orignSet]) {
   queue.push({
-    path: [item],
-    object: self[item],
+    path: [p],
+    object: self[p],
   });
-});
+}
 
-while (queue.length > 0) {
-  const current = queue.shift();
-  if (current.object === null || current.object === void 0) continue;
-  if (o.has(current.object)) continue;
-  o.has(current.object);
-  console.log(current.path);
+let current;
+let list = [];
 
-  for (let property of Object.getOwnPropertyNames(current.object)) {
-    const propertyDescriptor = Object.getOwnPropertyDescriptor(
-      current.object,
-      property
-    );
-    // console.log(propertyDescriptor);
+while (queue.length) {
+  current = queue.shift();
+  if (orignSet.has(current.object)) continue;
+  orignSet.add(current.object);
+  list.push({
+    id: current.path.join("."),
+    name: current.path[current.path.length - 1],
+    parentId:
+      current.path.length > 1
+        ? (current.path.pop(), current.path.join("."))
+        : null,
+  });
 
-    queue.push({
-      path: current.path.concat([property]),
-      object: property.value,
-    });
+  for (let p of Object.getOwnPropertyNames(current.object)) {
+    var property = Object.getOwnPropertyDescriptor(current.object, p); // 获取对象的descriptor
+
+    if (property.hasOwnProperty("value") && property.value instanceof Object) {
+      queue.push({
+        path: current.path.concat([p]),
+        object: property.value,
+      });
+    }
+
+    if (property.hasOwnProperty("get") && typeof property.get === "function") {
+      queue.push({
+        path: current.path.concat([p]),
+        object: property.get,
+      });
+    }
+
+    if (property.hasOwnProperty("set") && typeof property.set === "function") {
+      queue.push({
+        path: current.path.concat([p]),
+        object: property.set,
+      });
+    }
   }
 }
-console.log(o.size);
+console.log('list:',list)
+
+export { list };
