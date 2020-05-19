@@ -1,4 +1,5 @@
 .DS_Store
 .idea
+/.vscode
 /utils
 /__PRIVATE.md
