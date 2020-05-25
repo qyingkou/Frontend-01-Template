@@ -3,27 +3,26 @@ const querystring = require("querystring");
 const mime = require("./mime.js");
 const Request = require("./Request.js");
 const htmlParse = require("./htmlParse.js");
-const { cssParse } = require("./cssParse.js");
-
-let request = new Request({
-  method: "POST",
-  hostname: "127.0.0.1",
-  port: 8000,
-  pathname: "/",
-  headers: {
-    contentType: "application/json",
-  },
-  data: {
-    name: "qyingkou",
-  },
-});
+const render = require("./render.js");
+const images = require("images");
 
 void (async function () {
-  let response = await request.send();
-  console.log(`==============responseParse==================`);
-  console.log(response);
+  let request = new Request({
+    method: "POST",
+    hostname: "127.0.0.1",
+    port: 8000,
+    pathname: "/",
+    headers: {
+      contentType: "application/json",
+    },
+    data: {
+      name: "qyingkou",
+    },
+  });
 
-  let htmlAST = htmlParse.parse(response.body);
-  console.log(`==============htmlAST=========================`);
-  console.log(JSON.stringify(htmlAST, null, "   "));
+  let response = await request.send();
+  let dom = htmlParse.parse(response.body);
+  let viewport = images(800, 600);
+  render(viewport, dom);
+  viewport.save("viewport.jpg"); // 一片漆黑
 })();

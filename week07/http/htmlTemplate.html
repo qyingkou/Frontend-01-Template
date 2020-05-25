@@ -1,26 +1,24 @@
-<html lang="en" customfield=customvalue>
-
-<head>
-    <title>server provide HTML </title>
+<html lang="en" customfield="customvalue">
+  <head>
+    <title>server provide HTML</title>
     <style>
-        body div #myid {
-            width: 100px;
-            background-color: #ff5000;
-            ;
-        }
-
-        body div img {
-            width: 30px;
-            background-color: #ff1111;
-        }
+      #container {
+        display: flex;
+        background-color: gray;
+      }
+      #container div {
+        background-color: orange;
+        font-size: 20px;
+        line-height: 50px;
+        flex-basis: 50px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div>
-        <img id="myid" />
-        <img />
+  <body>
+    <div id="container">
+      <div>1</div>
+      <div>2</div>
     </div>
-</body>
-
+  </body>
 </html>

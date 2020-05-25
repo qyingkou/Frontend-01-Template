@@ -1,5 +1,7 @@
 const css = require("css");
+const layout = require("./layout.js");
 
+const EOF = Symbol("EOF"); // EOF:End Of File
 let currentToken = null;
 let currentAttribute = null;
 let currentTextNode = null;
@@ -14,7 +16,7 @@ let stack = [
 let rules = [];
 function addCSSRules(text) {
   const ast = css.parse(text);
-  console.log(JSON.stringify(ast, null, "   "));
+  // console.log(JSON.stringify(ast, null, "   "));
   rules.push(...ast.stylesheet.rules);
 }
 function match(element, selector) {
@@ -53,7 +55,7 @@ function compare(sp1, sp2) {
 
 function computeCSS(element) {
   // 从栈中取所有的父元素
-  const elements = stack.slice().reverse();
+  let elements = stack.slice().reverse();
   if (!element.computedStyle) element.computedStyle = {};
 
   for (let rule of rules) {
@@ -77,15 +79,14 @@ function computeCSS(element) {
           property.value = declaration.value;
           property.specificity = sp;
         } else if (compare(property.specificity, sp) < 0) {
-          property.value = declaration.value;
-          property.specificity = sp;
+          for (let k = 0; k < 4; k++) {
+            computedStyle[declaration.property][declaration.value][k] += sp[k];
+          }
         }
       }
     }
   }
 }
-
-const EOF = Symbol("EOF"); // EOF:End Of File
 
 function parse(htmlStr) {
   let state = data;
@@ -108,7 +109,7 @@ function emit(token) {
     element.tagName = token.tagName;
 
     for (let p in token) {
-      if (p != "type" && p != "tagName") {
+      if (p != "type" || p != "tagName") {
         element.attributes.push({
           name: p,
           value: token[p],
@@ -133,6 +134,7 @@ function emit(token) {
       if (top.tagName === "style") {
         addCSSRules(top.children[0].content);
       }
+      layout(top);
       stack.pop();
     }
     currentTextNode = null;

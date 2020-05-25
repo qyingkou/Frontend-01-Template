@@ -8,9 +8,13 @@
   },
   "keywords": [],
   "author": "",
-  "repository":"",
+  "repository": "",
   "license": "ISC",
   "devDependencies": {
-    "css": "^2.2.4"
+    "css": "^2.2.4",
+    "images": "^3.0.2"
+  },
+  "dependencies": {
+    "9": "0.0.1"
   }
 }
