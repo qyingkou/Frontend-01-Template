@@ -4,7 +4,9 @@
   "description": "week07",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "toy": "node http/client.js",
+    "resource": "node ./tool/crawler_css_resource.js",
+    "property": "node ./tool/crawler_css_property.js"
   },
   "keywords": [],
   "author": "",
@@ -12,9 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "css": "^2.2.4",
-    "images": "^3.0.2"
+    "images": "^3.0.2",
+    "jsdom": "^16.2.2"
   },
-  "dependencies": {
-    "9": "0.0.1"
-  }
+  "dependencies": {}
 }
