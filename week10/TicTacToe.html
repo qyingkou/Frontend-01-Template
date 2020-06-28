@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>井字棋</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #mask {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1;
+      }
+      #app {
+        width: 304px;
+        height: 304px;
+        outline: 10px solid lightgray;
+        margin: 50px;
+      }
+      #app table {
+        border-collapse: collapse;
+      }
+      #app tr td {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #999;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 50px;
+        color: red;
+        line-height: 100px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <!-- 
+    === 游戏规则 ===
+    棋盘：3x3
+    双方分别持有o和x这两种棋子
+    双方交替落子
+    率先连成三子直线的一方获胜
+   -->
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import App from "./TicTacToe.js";
+      const app = new App();
+      app.render(document.getElementById("app"));
+    </script>
+  </body>
+</html>
