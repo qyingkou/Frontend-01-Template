@@ -17,17 +17,20 @@
         border: 1px solid #999;
       }
       #board tbody tr td {
-        width: 8px;
-        height: 8px;
+        width: 5px;
+        height: 5px;
         background-color: #eee;
-        border: 1px solid #ddd;
+        /* border: 1px solid #ededed; */
         user-select: none;
       }
       #board tbody tr td.draw {
-        background-color: #666;
+        background-color: #333;
       }
-      #board tbody tr td.fill {
-        background-color: lightgreen;
+      #board tbody tr td.walk {
+        background-color: green;
+      }
+      #board tbody tr td.path {
+        background-color: red;
       }
       #btn_save,
       #btn_restore,
@@ -55,18 +58,15 @@
   </head>
   <body>
     <div class="container">
-      <table id="board"></table>
-      <div>
-        <button id="btn_save">保存数据到本地</button>
-        <button id="btn_restore">从本地恢复数据</button>
-        <button id="btn_reset">清除本地数据</button>
-        <button id="btn_reload">重置页面</button>
-      </div>
-      <div>
-        <button id="btn_find">开始计算</button>
-      </div>
+      <div id="app"></div>
     </div>
 
-    <script src="./pathFinding/index.js"></script>
+    <script type="module">
+      import App from "./UI.js";
+
+      const root = document.getElementById("app");
+      const app = new App();
+      app.renderBackground(root);
+    </script>
   </body>
 </html>
