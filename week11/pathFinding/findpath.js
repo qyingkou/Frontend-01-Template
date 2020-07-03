@@ -1,28 +1,18 @@
+import { Sorted } from "./util.js";
+
 /* 广度优先 */
 export async function wide(start, end) {
   const self = this;
   const [numX, numY] = this.cfg.board;
   const { space, wall, find, path } = this.cfg.point;
-  let queue = [start];
+  let collection = new Sorted([start], (a, b) => distance(a) - distance(b));
   let data = self.data.slice();
 
-  while (queue.length) {
-    let [x, y] = queue.shift();
+  while (collection.length) {
+    let [x, y] = collection.take();
     if (x === end[0] && y === end[1]) {
       return await stroke([x, y]); // 描绘最短路径
     }
-
-    // 描绘周围8个探路点,按逆时针旋转
-    /*
-    await fill([x, y + 1], [x, y]);
-    await fill([x + 1, y + 1], [x, y]);
-    await fill([x + 1, y], [x, y]);
-    await fill([x + 1, y - 1], [x, y]);
-    await fill([x, y - 1], [x, y]);
-    await fill([x - 1, y - 1], [x, y]);
-    await fill([x - 1, y], [x, y]);
-    await fill([x + 1, y + 1], [x, y]);
-    */
 
     // 描绘周围8个探路点,按顺时针旋转
     // 对于斜角穿透问题，加入判断
@@ -45,7 +35,7 @@ export async function wide(start, end) {
     if (data[numX * y + x] !== space.value && data[numX * y + x] !== path.value)
       return;
     if (x < 0 || y < 0 || x > numX - 1 || y > numX - 1) return;
-    queue.push([x, y]);
+    collection.push([x, y]);
     data[numX * y + x] = pre;
     await draw(self.root, [x, y]);
   }
@@ -60,6 +50,9 @@ export async function wide(start, end) {
     }
     await draw(self.root, start, path.className);
     return p;
+  }
+  function distance([x, y]) {
+    return Math.abs(x - end[0]) ** 2 + Math.abs(y - end[1]) ** 2;
   }
 
   return null;
