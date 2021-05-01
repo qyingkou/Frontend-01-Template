@@ -2,8 +2,8 @@
  * Realm的构成
  */
 const Realm = {
+  Intrinsics: "", // 记录其字段名称是内在键且其值是对象的记录
   GlobalObject: GlobalObject(),
-  Intrinsics: "", // ?
   GlobalEnv: "", // ?
   TemplateMap: "", // ?
   HostDefined: "", // ?
@@ -128,6 +128,6 @@ while (queue.length) {
     }
   }
 }
-console.log('list:',list)
+console.log("list:", list);
 
 export { list };

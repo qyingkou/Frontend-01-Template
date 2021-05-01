@@ -27,7 +27,7 @@ export default class UI {
         },
       },
       start: [0, 25],
-      end: [49, 25],
+      end: [49, 0],
     };
     this.defaultData = new Array(this.cfg.board[0] * this.cfg.board[1]).fill(0);
     this.defaultData[
